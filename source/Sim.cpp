@@ -1,6 +1,11 @@
 #include <math.h>
-Sim::Sim(int numberOfDrones, float initialDistBtwDrns)
+
+Sim::Sim(float dt, float startTime, float finalTime, int numberOfDrones, float initialDistBtwDrns)
 {
+    this->dt = dt;
+    this->startTime = startTime;
+    this->finalTime = finalTime;
+
     std::vector<float> point = {0, 0};
     float angle = 0.0;
     float angleIncrement = (360.0 / ((float)numberOfDrones)) * (3.14 / 180.0);
@@ -31,7 +36,9 @@ Sim::~Sim()
 
 void Sim::Run()
 {
-    while (true)
+    int iter = (((int)this->finalTime) - ((int)this->startTime)) / ((int)dt);
+    for (int k = 0; k < iter; k++)
     {
+        checkProximity();
     }
 }

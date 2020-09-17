@@ -1,6 +1,5 @@
 #ifndef DRONE
 #define DRONE
-#include "_Drone.h"
 #include "_Observable.h"
 #include "_Observer.h"
 #include <vector>
@@ -10,10 +9,11 @@ public:
     Drone(float mass, std::vector<float> x_initial, std::vector<float> v_initial);
     ~Drone();
     void applyForce(std::vector<float> force, float dt);
+    void checkProximity();
     void addObserver(_Observer *_observer) override;
     void removeObserver(_Observer *_observer) override;
     void check() override;
-    void notifyAll() override;
+    void notify() override;
     void setChanged() override;
     void update() override;
 private:

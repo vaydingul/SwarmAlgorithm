@@ -36,7 +36,7 @@ void Drone::removeObserver(_Observer *_observer)
     }
 }
 
-void Drone::notifyAll()
+void Drone::notify()
 {
     if (this->isChanged)
     {
@@ -53,10 +53,5 @@ void Drone::setChanged()
     this->isChanged = true;
 }
 
-void Drone::check()
-{
-    while (true)
-    {
-    }
-}
+
 
