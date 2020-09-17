@@ -19,7 +19,7 @@ Sim::Sim(int numberOfDrones, float initialDistBtwDrns)
         {
             if (i != k)
             {
-                drones[i].
+                drones[i]->addObserver(drones[k]);
             }
         }
     }
