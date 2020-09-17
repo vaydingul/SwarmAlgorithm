@@ -20,9 +20,10 @@ def makeHeaderFile(className):
     lines.append(temp)
 
     fname = "header/" + className + ".h"
-    with open(fname, 'w') as fileWrite:
-        for line in lines:
-            fileWrite.writelines(line)
+    if not os.path.isfile(fname):
+        with open(fname, 'w') as fileWrite:
+            for line in lines:
+                fileWrite.writelines(line)
 
 
 def makeSourceFile(className):
@@ -37,9 +38,10 @@ def makeSourceFile(className):
 
 
     fname = "source/" + className + ".cpp"
-    with open(fname, 'w') as fileWrite:
-        for line in lines:
-            fileWrite.writelines(line)
+    if not os.path.isfile(fname):
+        with open(fname, 'w') as fileWrite:
+            for line in lines:
+                fileWrite.writelines(line)
 
 
 
