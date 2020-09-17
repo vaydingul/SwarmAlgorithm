@@ -22,6 +22,8 @@ void Drone::applyForce(std::vector<float> force, float dt)
     this->x.push_back(temp_x);
 }
 
+
+
 void Drone::addObserver(_Observer *_observer)
 {
     this->_observers.push_back(_observer);
@@ -55,3 +57,12 @@ void Drone::setChanged()
 
 
 
+std::vector<float> Drone::getX()
+{
+    return this->x.back();
+}
+
+std::vector<float> Drone::getV()
+{
+    return this->v.back();
+}
