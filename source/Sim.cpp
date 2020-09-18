@@ -5,16 +5,18 @@ Sim::Sim(float dt, float startTime, float finalTime, int numberOfDrones, float i
     this->dt = dt;
     this->startTime = startTime;
     this->finalTime = finalTime;
-
+    this->numberOfDrones = numberOfDrones;
+    this->initialDistBtwDrns = initialDistBtwDrns;
+    this->iter = (float)(((this->finalTime) - (this->startTime)) / (dt));
     std::vector<float> point = {0, 0};
     float angle = 0.0;
     float angleIncrement = (360.0 / ((float)numberOfDrones)) * (3.14 / 180.0);
 
-    for (int k = 0; k < numberOfDrones; k++)
+    for (int k = 0; k < this->numberOfDrones; k++)
     {
         drones.push_back(new Drone(1, point, {0, 0}));
-        point[0] *= cos(angle);
-        point[1] *= sin(angle);
+        point[0] *= cos(angle) * this->initialDistBtwDrns;
+        point[1] *= sin(angle) * this->initialDistBtwDrns;
         angle += angleIncrement;
     }
 
@@ -36,9 +38,10 @@ Sim::~Sim()
 
 void Sim::Run()
 {
-    int iter = (((int)this->finalTime) - ((int)this->startTime)) / ((int)dt);
-    for (int k = 0; k < iter; k++)
+
+    for (int k = 0; k < this->iter; k++)
     {
+        /**
         for (Drone *drn1 : drones)
         {
             for (Drone *drn2 : drones)
@@ -50,27 +53,53 @@ void Sim::Run()
                 }
             }
         }
+        **/
+        this->preStep();
+        this->Step();
+        this->postStep();
     }
 }
 
-void Sim::checkProximity(Drone *drn1, Drone *drn2)
+void Sim::preStep()
 {
-    std::vector<float> r;
-    float dist = 0.0;
-    for (int k = 0; k < 2; k++)
-    {
-        r[k] = drn1->getX()[k] - drn2->getX()[k];
-        dist += pow(r[k], 2);
-    }
 
-    if (dist < this->proximityCaution)
+    for (Drone *drn : this->drones)
     {
-        std::vector<float> reqForce;
-        for (int k = 0; k < 2; k++)
+        drn->checkProximity();
+    }
+}
+
+void Sim::Step()
+{
+    for (Drone *drn : this->drones)
+    {
+        drn->applyForce(drn->getRequiredForce(), this->dt);
+    }
+}
+
+void Sim::postStep()
+{
+    for (Drone *drn : this->drones)
+    {
+        drn->resetProximityCount();
+        drn->resetRequiredForce();
+    }
+}
+
+void Sim::saveResults2CSV()
+{
+    std::fstream file("data.csv");
+
+    for (int k = 0; k < this->iter; k++)
+    {
+
+        for (Drone *drn : drones)
         {
-            reqForce[k] = r[k] * dist * this->forceCoeff;
+            std::vector<std::vector<float>> x, v;
+            x = drn->getXHistory();
+            v = drn->getVHistory();
+            file << x[k][0] << "," << x[k][1] << ",";
         }
-        // TODO: Simulationın kendisinin bir timestep atlatmasına izin ver.
-        // TODO: Bide Observable/Observer altyapısını kullanmaya çalış boşa gidecek yoksa ;(
+        file << std::endl;
     }
 }

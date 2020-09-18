@@ -22,8 +22,6 @@ void Drone::applyForce(std::vector<float> force, float dt)
     this->x.push_back(temp_x);
 }
 
-
-
 void Drone::addObserver(_Observer *_observer)
 {
     this->_observers.push_back(_observer);
@@ -38,8 +36,9 @@ void Drone::removeObserver(_Observer *_observer)
     }
 }
 
-void Drone::notify()
+void Drone::notify(_Observer *_observer, std::vector<float> reqForce)
 {
+    /**
     if (this->isChanged)
     {
         for (auto it = this->_observers.begin(); it != this->_observers.end(); ++it)
@@ -48,11 +47,45 @@ void Drone::notify()
         }
         this->isChanged = false;
     }
+    **/
+    _observer->update(reqForce);
 }
 
 void Drone::setChanged()
 {
     this->isChanged = true;
+}
+
+void Drone::update(std::vector<float> reqForce)
+{
+    for (int k = 0; k < 2; k++)
+    {
+        this->requiredForce[k] = reqForce[k];
+    }
+    this->proximityCount++;
+}
+
+void Drone::checkProximity()
+{
+    for (_Observer *obs : this->_observers)
+    {
+        Drone *drn = (Drone *)obs;
+        std::vector<float> reqForce;
+        std::vector<float> r = this->getR(drn);
+        float dist = this->getDistance(r);
+        if (dist < this->proximityCaution)
+        {
+            for (int k = 0; k < 2; k++)
+            {
+                reqForce[k] = r[k] * dist * this->forceCoeff;
+            }
+            this->notify(drn, reqForce);
+        }
+        else
+        {
+            this->notify(drn,{0.0, 0.0});
+        }
+    }
 }
 
 
@@ -65,4 +98,61 @@ std::vector<float> Drone::getX()
 std::vector<float> Drone::getV()
 {
     return this->v.back();
+}
+
+std::vector<std::vector<float>> Drone::getXHistory()
+{
+    return this->x;
+}
+
+std::vector<std::vector<float>> Drone::getVHistory()
+{
+    return this->v;
+}
+std::vector<float> Drone::getR(Drone *drn)
+{
+    std::vector<float> r(2);
+    for (int k = 0; k < 2; k++)
+    {
+        r[k] = drn->getX()[k] - this->getX()[k];
+    }
+    return r;
+}
+
+float Drone::getDistance(std::vector<float> r)
+{
+    float dist = 0.0;
+    for (int k = 0; k < 2; k++)
+    {
+        dist += pow(r[k], 2);
+    }
+    return dist;
+}
+
+std::vector<float> Drone::getRequiredForce()
+{
+    return this->requiredForce;
+}
+
+void Drone::increaseProximityCount()
+{
+    this->proximityCount++;
+}
+
+void Drone::addRequiredForce(std::vector<float> reqForce)
+{
+    for (int k = 0; k < 2; k++)
+    {
+        this->requiredForce[k] += reqForce[k];
+    }
+}
+
+void Drone::resetProximityCount()
+{
+    this->proximityCount = 0;
+}
+
+void Drone::resetRequiredForce()
+{
+    this->requiredForce = {0.0, 0.0};
 }

@@ -4,23 +4,26 @@
 #include "Drone.h"
 #include <string>
 #include <math.h>
+#include <fstream>
 class Sim
 {
 public:
     Sim(float dt, float startTime, float finalTime, int numberOfDrones, float initialDistBtwDrns);
     ~Sim();
     void Run();
-    void checkProximity(Drone *drn1, Drone *drn2);
-
+    void preStep();
+    void Step();
+    void postStep();
+    void saveResults2CSV();
     
 
 private:
     float dt;
     float startTime;
     float finalTime;
+    int iter;
     float initialDistBtwDrns;
-    float proximityCaution = 3;
-    float forceCoeff = 0.1;
+    int numberOfDrones;
     std::vector<Drone *> drones;
 };
 #include "../source/Sim.cpp"

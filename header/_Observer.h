@@ -11,7 +11,7 @@
 class _Observer
 {
 public:
-    virtual void update() = 0;
+    virtual void update(std::vector<float>) = 0;
 };
 #include "../source/_Observer.cpp"
 #endif
