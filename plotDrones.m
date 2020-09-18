@@ -15,10 +15,8 @@ end
 sz = size(datas);
 numberOfDrones = sz(3);
 iter = sz(1);
-v = VideoWriter('newfile','MPEG-4');
-v.Quality = 50;
-open(v)
-a = figure('Visible', 'off');
+
+a = figure('Visible', 'on');
 hold on;
 
 for k = 1:iter
@@ -27,8 +25,7 @@ for k = 1:iter
         plot(datas(k, 1, m), datas(k, 2, m), 'o');
     end
 
-    frame = getframe(gcf);
-    writeVideo(v,frame);
+    
     axis equal
 
     drawnow;
@@ -39,5 +36,4 @@ end
 
 hold off;
 
-close(v)
 

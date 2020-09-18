@@ -69,8 +69,8 @@ void Sim::postStep()
 {
     for (Drone *drn : this->drones)
     {
-        drn->resetProximityCount();
-        drn->resetRequiredForce();
+        drn->SetProximityForce({0.0, 0.0}); // It allocates the sufficient memory for required force
+        drn->SetProximityCount(0);
     }
 }
 
@@ -80,11 +80,11 @@ void Sim::saveResults2CSV()
     for (Drone *drn : drones)
     {
         std::string fname = "drones/" + std::to_string(i) + ".csv";
-        std::cout<<fname;
+        std::cout << fname;
         std::ofstream file(fname, std::ofstream::out);
         std::vector<std::vector<float>> x, v;
-        x = drn->getXHistory();
-        v = drn->getVHistory();
+        x = drn->getX();
+        v = drn->getV();
 
         for (int k = 0; k < this->iter; k++)
         {

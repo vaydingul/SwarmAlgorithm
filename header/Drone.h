@@ -16,7 +16,8 @@ public:
     //AERODYNAMIC ACTIVITY
     std::vector<float> calculateDrag();
     std::vector<float> calculateTargetForce();
-    
+    std::vector<float> calculateProximityForce();
+
     //COMMUNICATION PART
     void addObserver(_Observer *_observer) override;
     void removeObserver(_Observer *_observer) override;
@@ -24,33 +25,52 @@ public:
     void update(std::vector<float>) override;
 
     //GETTERS AND SETTERS
-    std::vector<float> getX();
-    std::vector<float> getV();
-    std::vector<std::vector<float>> getXHistory();
-    std::vector<std::vector<float>> getVHistory();
-    std::vector<float> getR(Drone *);
-    float getDistance(std::vector<float>);
-    std::vector<float> getRequiredForce();
-    void increaseProximityCount();
-    void addRequiredForce(std::vector<float>);
-    void resetProximityCount();
-    void resetRequiredForce();
+    std::vector<float> getXFinal();
+    std::vector<float> getVFinal();
+    std::vector<std::vector<float>> getX();
+    std::vector<std::vector<float>> getV();
+    int getProximityCount();
+    void SetProximityCount(int);
+    std::vector<float> getProximityForce();
+    void SetProximityForce(std::vector<float>);
+    float GetMass();
+    void SetMass(float);
+    float GetProximityCautionDistance();
+    void SetProximityCautionDistance(float);
+    float GetProximityCoeff();
+    void SetProximityCoeff(float);
+    float GetTargetCoeff();
+    void SetTargetCoeff(float );
+    float GetC_D();
+    void SetC_D(float);
+    float GetRho();
+    void SetRho(float);
+    float GetS();
+    void SetS(float);
+    std::vector<float> GetGoToLocation();
+    void SetGoToLocation(std::vector<float>);
+    std::vector<_Observer *> get_Observers();
+    void Set_Observers(std::vector<_Observer *>);
+    std::vector<float> calculateRVector(Drone *);
+    float calculateDistanceFromRVector(std::vector<float>);
 
 private:
     float mass;
-    std::vector<std::vector<float>> x, v;
-    std::vector<_Observer *> _observers;
-    bool isChanged;
-    std::vector<float> requiredForce;
-    float proximityCount;
-    float proximityCaution = 3;
-    float proximityCoeff = 0.1;
-    float targetCoeff = 0.1;
-    float C_D = 1.5;
-    float rho = 1.225;
-    float S = 0.5;
+    std::vector<std::vector<float>> x;
+    std::vector<std::vector<float>> v;
+    std::vector<float> proximityForce;
+    int proximityCount;
+    float proximityCautionDistance;
+    float proximityCoeff;
+    float targetCoeff;
+    float C_D;
+    float rho;
+    float S;
     std::vector<float> goToLocation;
+
     
+
+    std::vector<_Observer *> _observers;
 };
 #include "../source/Drone.cpp"
 #endif
