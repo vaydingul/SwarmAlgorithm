@@ -8,6 +8,7 @@ Sim::Sim(float dt, float startTime, float finalTime, int numberOfDrones, float i
     this->numberOfDrones = numberOfDrones;
     this->initialDistBtwDrns = initialDistBtwDrns;
     this->iter = (float)(((this->finalTime) - (this->startTime)) / (dt));
+
     std::vector<float> point = {0, 0};
     float angle = 0.0;
     float angleIncrement = (360.0 / ((float)numberOfDrones)) * (3.14 / 180.0);
@@ -41,19 +42,6 @@ void Sim::Run()
 
     for (int k = 0; k < this->iter; k++)
     {
-        /**
-        for (Drone *drn1 : drones)
-        {
-            for (Drone *drn2 : drones)
-            {
-                if (drn1 != drn2)
-
-                {
-                    checkProximity(drn1, drn2);
-                }
-            }
-        }
-        **/
         this->preStep();
         this->Step();
         this->postStep();
@@ -73,7 +61,7 @@ void Sim::Step()
 {
     for (Drone *drn : this->drones)
     {
-        drn->applyForce(drn->getRequiredForce(), this->dt);
+        drn->propagate(this->dt);
     }
 }
 

@@ -19,7 +19,6 @@ public:
     virtual void addObserver(_Observer *_observer) = 0;
     virtual void removeObserver(_Observer *_observer) = 0;
     virtual void notify(_Observer *_observer, std::vector<float>) = 0;
-    virtual void setChanged() = 0;
 };
 
 #include "../source/_Observable.cpp"

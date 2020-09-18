@@ -4,11 +4,11 @@
 int main()
 {
 
-    
-    float dt = 0.01;
+    std::system("python deleteCsv.py");
+    float dt = 0.1;
     float startTime = 0.0;
-    float finalTime = 10.0;
-    int numberOfDrones = 10;
+    float finalTime = 100.0;
+    int numberOfDrones = 5;
     float initialDistBtwDrns = 2.0;
     Sim *sim = new Sim(dt, startTime, finalTime, numberOfDrones, initialDistBtwDrns);
     sim->Run();

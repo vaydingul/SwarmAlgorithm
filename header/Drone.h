@@ -10,15 +10,20 @@ class Drone : public _Observable, public _Observer
 public:
     Drone(float mass, std::vector<float> x_initial, std::vector<float> v_initial);
     ~Drone();
-    void applyForce(std::vector<float> force, float dt);
+    void propagate(float dt);
     void checkProximity();
 
+    //AERODYNAMIC ACTIVITY
+    std::vector<float> calculateDrag();
+    std::vector<float> calculateTargetForce();
+    
+    //COMMUNICATION PART
     void addObserver(_Observer *_observer) override;
     void removeObserver(_Observer *_observer) override;
     void notify(_Observer *_observer, std::vector<float>) override;
-    void setChanged() override;
     void update(std::vector<float>) override;
 
+    //GETTERS AND SETTERS
     std::vector<float> getX();
     std::vector<float> getV();
     std::vector<std::vector<float>> getXHistory();
@@ -39,7 +44,13 @@ private:
     std::vector<float> requiredForce;
     float proximityCount;
     float proximityCaution = 3;
-    float forceCoeff = 0.1;
+    float proximityCoeff = 0.1;
+    float targetCoeff = 0.1;
+    float C_D = 1.5;
+    float rho = 1.225;
+    float S = 0.5;
+    std::vector<float> goToLocation;
+    
 };
 #include "../source/Drone.cpp"
 #endif
