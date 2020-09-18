@@ -15,8 +15,8 @@ Sim::Sim(float dt, float startTime, float finalTime, int numberOfDrones, float i
     for (int k = 0; k < this->numberOfDrones; k++)
     {
         drones.push_back(new Drone(1, point, {0, 0}));
-        point[0] *= cos(angle) * this->initialDistBtwDrns;
-        point[1] *= sin(angle) * this->initialDistBtwDrns;
+        point[0] += cos(angle) * this->initialDistBtwDrns;
+        point[1] += sin(angle) * this->initialDistBtwDrns;
         angle += angleIncrement;
     }
 
@@ -88,18 +88,21 @@ void Sim::postStep()
 
 void Sim::saveResults2CSV()
 {
-    std::fstream file("data.csv");
-
-    for (int k = 0; k < this->iter; k++)
+    int i = 0;
+    for (Drone *drn : drones)
     {
+        std::string fname = "drones/" + std::to_string(i) + ".csv";
+        std::cout<<fname;
+        std::ofstream file(fname, std::ofstream::out);
+        std::vector<std::vector<float>> x, v;
+        x = drn->getXHistory();
+        v = drn->getVHistory();
 
-        for (Drone *drn : drones)
+        for (int k = 0; k < this->iter; k++)
         {
-            std::vector<std::vector<float>> x, v;
-            x = drn->getXHistory();
-            v = drn->getVHistory();
-            file << x[k][0] << "," << x[k][1] << ",";
+            file << x[k][0] << "," << x[k][1] << std::endl;
         }
-        file << std::endl;
+        file.close();
+        i++;
     }
 }

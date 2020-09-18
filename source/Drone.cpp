@@ -3,6 +3,8 @@ Drone::Drone(float mass, std::vector<float> x_initial, std::vector<float> v_init
     this->mass = mass;
     this->x.push_back(x_initial);
     this->v.push_back(v_initial);
+    this->resetRequiredForce();
+    this->resetProximityCount();
 }
 
 Drone::~Drone()
@@ -11,7 +13,7 @@ Drone::~Drone()
 
 void Drone::applyForce(std::vector<float> force, float dt)
 {
-    std::vector<float> temp_a, temp_v, temp_x;
+    std::vector<float> temp_a(2), temp_v(2), temp_x(2);
     for (int k = 0; k < 2; k++)
     {
         temp_a[k] = force[k] / this->mass;
@@ -70,7 +72,7 @@ void Drone::checkProximity()
     for (_Observer *obs : this->_observers)
     {
         Drone *drn = (Drone *)obs;
-        std::vector<float> reqForce;
+        std::vector<float> reqForce(2);
         std::vector<float> r = this->getR(drn);
         float dist = this->getDistance(r);
         if (dist < this->proximityCaution)

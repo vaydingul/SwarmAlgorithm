@@ -5,6 +5,7 @@
 #include <string>
 #include <math.h>
 #include <fstream>
+#include <string>
 class Sim
 {
 public:
