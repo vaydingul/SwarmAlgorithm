@@ -16,9 +16,10 @@ void Drone::propagate(float dt)
 {
     std::vector<float> temp_a(2), temp_v(2), temp_x(2);
 
-    std::vector<float> proximityForce = this->getRequiredForce();
+    
     std::vector<float> dragForce = this->calculateDrag();
     std::vector<float> targetForce = this->calculateTargetForce();
+    std::vector<float> proximityForce = this->getRequiredForce();
 
     for (int k = 0; k < 2; k++)
     {
@@ -60,6 +61,7 @@ std::vector<float> Drone::calculateDrag()
     {
         dragForce[k] = pow(this->getV()[k], 2) * 0.5 * this->rho * this->S * this->C_D;
     }
+    return dragForce;
 }
 
 std::vector<float> Drone::calculateTargetForce()
