@@ -22,7 +22,7 @@ hold on;
 for k = 1:iter
 
     for m = 1:numberOfDrones
-        plot(datas(k, 1, m), datas(k, 2, m), 'o');
+        plot(datas(k, 1, m), datas(k, 2, m), 'o-');
     end
 
     

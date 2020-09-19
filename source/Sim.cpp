@@ -70,7 +70,7 @@ void Sim::postStep()
     for (Drone *drn : this->drones)
     {
         drn->SetProximityForce({0.0, 0.0}); // It allocates the sufficient memory for required force
-        drn->SetProximityCount(0);
+        drn->SetProximityCount(1);
     }
 }
 

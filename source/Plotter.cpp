@@ -1,8 +1,0 @@
-Plotter::Plotter(){
-
-}
-
-Plotter::~Plotter(){
-
-}
-
