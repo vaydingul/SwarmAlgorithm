@@ -43,10 +43,6 @@ void Sim::Run()
     for (int k = 0; k < this->iter; k++)
     {
         this->preStep();
-        if(k == 10)
-        {
-            this->drones[0]->SetExternalForce({0.0005, 0.0005});
-        }
         this->Step();
         this->postStep();
     }
