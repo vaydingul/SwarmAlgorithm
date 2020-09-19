@@ -42,6 +42,8 @@ public:
     void SetProximityCoeff(float);
     float GetTargetSpringCoeff();
     void SetTargetSpringCoeff(float );
+    float GetTargetDampingCoeff();
+    void SetTargetDampingCoeff(float );
     float GetC_D();
     void SetC_D(float);
     float GetRho();
@@ -75,6 +77,7 @@ private:
     float proximityCautionDistance;
     float proximityCoeff;
     float targetSpringCoeff;
+    float targetDampingCoeff;
     float C_D;
     float rho;
     float S;

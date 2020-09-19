@@ -10,13 +10,14 @@ Drone::Drone(float mass, std::vector<float> x_initial, std::vector<float> v_init
     this->SetProximityCautionDistance(3);
     this->SetProximityCoeff(0.001);
     this->SetTargetSpringCoeff(0.001);
+    this->SetTargetDampingCoeff(10.0);
     this->SetC_D(0.5);
     this->SetRho(1.225);
     this->SetS(0.5);
-    this->SetTarget({1.0, 1.0});
+    this->SetTarget({0.0, 10.0});
     this->SetAerodynamicsEffectMode(true);
     this->SetProximityCautionMode(false);
-    this->SetTargetChaseMode(false);
+    this->SetTargetChaseMode(true);
     this->SetExternalForceMode(true);
 }
 
@@ -82,7 +83,6 @@ std::vector<float> Drone::calculateDrag()
     std::vector<float> v = this->GetVFinal();
     float vMag = sqrt(pow(v[0], 2) + pow(v[1], 2));
     float dragForceMag = pow(vMag, 2) * 0.5 * this->rho * this->S * this->C_D;
-    std::cout<<v[0]<<" "<<v[1]<<std::endl;
     if (vMag != 0.0)
     {
         for (int k = 0; k < 2; k++)
@@ -104,17 +104,21 @@ std::vector<float> Drone::calculateTargetForce()
     std::vector<float> targetForce(2), rTarget(2);
     std::vector<float> v = this->GetVFinal();
     float vMag = 0;
+    float rTargetMag = 0;
 
     for (int k = 0; k < 2; k++)
-    {
+    {   
+        rTarget[k] = this->GetTarget()[k] - this->GetXFinal()[k];
+        rTargetMag += pow(rTarget[k],2);
         vMag += pow(v[k], 2);
     }
     vMag = sqrt(vMag);
+    rTargetMag = sqrt(rTargetMag);
 
     for (int k = 0; k < 2; k++)
     {
-        rTarget[k] = this->GetTarget()[k] - this->GetXFinal()[k];
-        targetForce[k] = rTarget[k] * this->GetTargetSpringCoeff() + vMag * 0.01;
+        rTarget[k] /= rTargetMag;
+        targetForce[k] = (rTargetMag * this->GetTargetSpringCoeff() + vMag * this->GetTargetDampingCoeff()) * rTarget[k];
     }
 
     return Drone::saturate(targetForce, INFINITY);
@@ -277,6 +281,16 @@ float Drone::GetTargetSpringCoeff()
 void Drone::SetTargetSpringCoeff(float targetSpringCoeff)
 {
     this->targetSpringCoeff = targetSpringCoeff;
+}
+
+float Drone::GetTargetDampingCoeff()
+{
+    return this->targetDampingCoeff;
+}
+
+void Drone::SetTargetDampingCoeff(float targetDapingCoeff)
+{
+    this->targetDampingCoeff = targetDampingCoeff;
 }
 
 float Drone::GetC_D()

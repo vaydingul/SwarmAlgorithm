@@ -39,7 +39,6 @@ Sim::~Sim()
 
 void Sim::Run()
 {
-    this->drones[0]->SetExternalForce({0.0, 1.0});
     for (int k = 0; k < this->iter; k++)
     {
         this->preStep();
