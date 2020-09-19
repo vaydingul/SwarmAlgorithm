@@ -13,9 +13,12 @@ for file = files'
 end
 
 sz = size(datas);
-numberOfDrones = sz(3);
 iter = sz(1);
-
+if (length(sz) ~= 2)
+    numberOfDrones = sz(3);
+else
+    numberOfDrones = 1;
+end
 a = figure('Visible', 'on');
 hold on;
 
@@ -27,11 +30,14 @@ for k = 1:iter
 
     
     axis equal
+    set(gca, 'xlim', [-3 3]);
 
+    set(gca, 'ylim', [-3 3]);
     drawnow;
 
-    
-
+    if(mod(k,10) == 0)
+     %   cla;
+    end
 end
 
 hold off;
