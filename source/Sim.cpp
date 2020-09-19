@@ -39,7 +39,7 @@ Sim::~Sim()
 
 void Sim::Run()
 {
-
+    this->drones[0]->SetExternalForce({0.0, 1.0});
     for (int k = 0; k < this->iter; k++)
     {
         this->preStep();
@@ -69,8 +69,9 @@ void Sim::postStep()
 {
     for (Drone *drn : this->drones)
     {
-        drn->SetProximityForce({0.0, 0.0}); // It allocates the sufficient memory for required force
+        drn->SetProximityForce({0.0, 0.0});
         drn->SetProximityCount(1);
+        drn->SetExternalForce({0.0, 0.0});
     }
 }
 

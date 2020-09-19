@@ -6,11 +6,11 @@ Drone::Drone(float mass, std::vector<float> x_initial, std::vector<float> v_init
     this->SetProximityCount(1);
     this->SetProximityForce({0.0, 0.0});
     this->SetExternalForce({0.0, 0.0});
-    this->SetMass(1.0);
+    this->SetMass(0.5);
     this->SetProximityCautionDistance(3);
     this->SetProximityCoeff(0.001);
     this->SetTargetSpringCoeff(0.001);
-    this->SetC_D(10.0);
+    this->SetC_D(0.5);
     this->SetRho(1.225);
     this->SetS(0.5);
     this->SetTarget({1.0, 1.0});
@@ -38,9 +38,14 @@ void Drone::propagate(float dt)
     if (this->GetExternalForceMode())
         _externalForce = this->calculateExternalForce();
 
+    //std::cout << "Drag Force = [" << dragForce[0] << " " << dragForce[1] << "]" << std::endl;
+    //std::cout << "Target Force = [" << targetForce[0] << " " << targetForce[1] << "]" << std::endl;
+    //std::cout << "Proximity Force = [" << _proximityForce[0] << " " << _proximityForce[1] << "]" << std::endl;
+    //std::cout << "External Force = [" << _externalForce[0] << " " << _externalForce[1] << "]" << std::endl;
+
     for (int k = 0; k < 2; k++)
     {
-        temp_a = ((_proximityForce[k] / this->GetProximityCount()) - dragForce[k] + targetForce[k] + _externalForce[k]) / this->GetMass();
+        temp_a = ((_proximityForce[k] / this->GetProximityCount()) + dragForce[k] + targetForce[k] + _externalForce[k]) / this->GetMass();
         temp_v[k] = this->GetVFinal()[k] + temp_a * dt;
         temp_x[k] = this->GetXFinal()[k] + this->GetVFinal()[k] * dt;
     }
@@ -73,20 +78,24 @@ void Drone::checkProximity()
 
 std::vector<float> Drone::calculateDrag()
 {
-    std::vector<float> dragForce(2);
+    std::vector<float> dragForce(2, 0.0);
     std::vector<float> v = this->GetVFinal();
-    float vMag = pow(v[0], 2) + pow(v[1], 2);
+    float vMag = sqrt(pow(v[0], 2) + pow(v[1], 2));
     float dragForceMag = pow(vMag, 2) * 0.5 * this->rho * this->S * this->C_D;
-    for (int k = 0; k < 2; k++)
+    std::cout<<v[0]<<" "<<v[1]<<std::endl;
+    if (vMag != 0.0)
     {
-        if (vMag != 0.0)
+        for (int k = 0; k < 2; k++)
         {
             v[k] /= vMag;
+            dragForce[k] = -dragForceMag * v[k];
         }
-
-        dragForce[k] = dragForceMag * v[k];
     }
-    return Drone::saturate(dragForce, 20.0);
+    else
+    {
+        dragForce = {0.0, 0.0};
+    }
+    return Drone::saturate(dragForce, INFINITY);
 }
 
 std::vector<float> Drone::calculateTargetForce()
@@ -108,12 +117,12 @@ std::vector<float> Drone::calculateTargetForce()
         targetForce[k] = rTarget[k] * this->GetTargetSpringCoeff() + vMag * 0.01;
     }
 
-    return Drone::saturate(targetForce, 5.0);
+    return Drone::saturate(targetForce, INFINITY);
 }
 
 std::vector<float> Drone::calculateProximityForce()
 {
-    return Drone::saturate(this->GetProximityForce(), 5.0);
+    return Drone::saturate(this->GetProximityForce(), INFINITY);
 }
 
 std::vector<float> Drone::calculateExternalForce()

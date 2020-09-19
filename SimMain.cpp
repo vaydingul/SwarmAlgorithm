@@ -8,7 +8,7 @@ int main()
     float startTime = 0.0;
     float finalTime = 1000.0;
     int numberOfDrones = 1;
-    float initialDistBtwDrns = 2.9;
+    float initialDistBtwDrns = 0.0;
     Sim *sim = new Sim(dt, startTime, finalTime, numberOfDrones, initialDistBtwDrns);
     sim->Run();
     sim->saveResults2CSV();

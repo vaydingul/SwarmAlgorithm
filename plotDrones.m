@@ -30,13 +30,13 @@ for k = 1:iter
 
     
     axis equal
-    set(gca, 'xlim', [-3 3]);
+    set(gca, 'xlim', [-20 20]);
 
-    set(gca, 'ylim', [-3 3]);
+    set(gca, 'ylim', [-20 20]);
     drawnow;
 
     if(mod(k,10) == 0)
-     %   cla;
+        cla;
     end
 end
 
