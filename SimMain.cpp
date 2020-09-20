@@ -7,7 +7,7 @@ int main()
     float dt = 1e-1;
     float startTime = 0.0;
     float finalTime = 1000.0;
-    int numberOfDrones = 4;
+    int numberOfDrones = 10 ;
     float initialDistBtwDrns = 5.0;
     Sim *sim = new Sim(dt, startTime, finalTime, numberOfDrones, initialDistBtwDrns);
     
