@@ -8,7 +8,7 @@
 class Drone : public _Observable, public _Observer
 {
 public:
-    Drone(float mass, std::vector<float> x_initial, std::vector<float> v_initial);
+    Drone(std::vector<float> x_initial, std::vector<float> v_initial);
     ~Drone();
     void propagate(float dt);
     void checkProximity();
@@ -41,9 +41,9 @@ public:
     float GetProximityCoeff();
     void SetProximityCoeff(float);
     float GetTargetSpringCoeff();
-    void SetTargetSpringCoeff(float );
+    void SetTargetSpringCoeff(float);
     float GetTargetDampingCoeff();
-    void SetTargetDampingCoeff(float );
+    void SetTargetDampingCoeff(float);
     float GetC_D();
     void SetC_D(float);
     float GetRho();
@@ -86,8 +86,6 @@ private:
     bool proximityCautionMode;
     bool aerodynamicEffectMode;
     bool externalForceMode;
-
-    
 
     std::vector<_Observer *> _observers;
 };

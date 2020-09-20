@@ -1,24 +1,24 @@
-Drone::Drone(float mass, std::vector<float> x_initial, std::vector<float> v_initial)
+Drone::Drone(std::vector<float> x_initial, std::vector<float> v_initial)
 {
-    this->mass = mass;
     this->x.push_back(x_initial);
     this->v.push_back(v_initial);
+
     this->SetProximityCount(1);
     this->SetProximityForce({0.0, 0.0});
     this->SetExternalForce({0.0, 0.0});
     this->SetMass(0.5);
-    this->SetProximityCautionDistance(3);
-    this->SetProximityCoeff(0.001);
-    this->SetTargetSpringCoeff(0.001);
-    this->SetTargetDampingCoeff(10.0);
+    this->SetProximityCautionDistance(1.0);
+    this->SetProximityCoeff(0.01);
+    this->SetTargetSpringCoeff(0.0001);
+    this->SetTargetDampingCoeff(0.0001);
     this->SetC_D(0.5);
     this->SetRho(1.225);
     this->SetS(0.5);
-    this->SetTarget({0.0, 10.0});
+    this->SetTarget({2.5, 20.0});
     this->SetAerodynamicsEffectMode(true);
-    this->SetProximityCautionMode(false);
+    this->SetProximityCautionMode(true);
     this->SetTargetChaseMode(true);
-    this->SetExternalForceMode(true);
+    this->SetExternalForceMode(false);
 }
 
 Drone::~Drone()
@@ -59,14 +59,16 @@ void Drone::checkProximity()
     for (_Observer *obs : this->_observers)
     {
         Drone *drn = (Drone *)obs;
-        std::vector<float> reqForce(2);
+        std::vector<float> reqForce(2, 0.0);
         std::vector<float> r = this->calculateRVector(drn);
         float dist = this->calculateDistanceFromRVector(r);
         if (dist < this->GetProximityCautionDistance())
         {
+
             for (int k = 0; k < 2; k++)
             {
-                reqForce[k] = r[k] * this->proximityCoeff * dist;
+                r[k] /= dist;
+                reqForce[k] = r[k] * this->proximityCoeff * (this->GetProximityCautionDistance() / dist);
             }
             this->notify(drn, reqForce);
         }
@@ -107,9 +109,9 @@ std::vector<float> Drone::calculateTargetForce()
     float rTargetMag = 0;
 
     for (int k = 0; k < 2; k++)
-    {   
+    {
         rTarget[k] = this->GetTarget()[k] - this->GetXFinal()[k];
-        rTargetMag += pow(rTarget[k],2);
+        rTargetMag += pow(rTarget[k], 2);
         vMag += pow(v[k], 2);
     }
     vMag = sqrt(vMag);
@@ -288,7 +290,7 @@ float Drone::GetTargetDampingCoeff()
     return this->targetDampingCoeff;
 }
 
-void Drone::SetTargetDampingCoeff(float targetDapingCoeff)
+void Drone::SetTargetDampingCoeff(float targetDampingCoeff)
 {
     this->targetDampingCoeff = targetDampingCoeff;
 }

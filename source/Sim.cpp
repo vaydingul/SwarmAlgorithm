@@ -7,15 +7,14 @@ Sim::Sim(float dt, float startTime, float finalTime, int numberOfDrones, float i
     this->finalTime = finalTime;
     this->numberOfDrones = numberOfDrones;
     this->initialDistBtwDrns = initialDistBtwDrns;
-    this->iter = (float)(((this->finalTime) - (this->startTime)) / (dt));
+    this->iter = (int)(((this->finalTime) - (this->startTime)) / (dt));
 
     std::vector<float> point = {0, 0};
     float angle = 0.0;
-    float angleIncrement = (360.0 / ((float)numberOfDrones)) * (3.14 / 180.0);
-
+    float angleIncrement = (360.0 / ((float)numberOfDrones)) * ( 3.1415 / 180.0);
     for (int k = 0; k < this->numberOfDrones; k++)
     {
-        drones.push_back(new Drone(1, point, {0, 0}));
+        drones.push_back(new Drone(point, {0, 0}));
         point[0] += cos(angle) * this->initialDistBtwDrns;
         point[1] += sin(angle) * this->initialDistBtwDrns;
         angle += angleIncrement;
@@ -77,7 +76,7 @@ void Sim::postStep()
 void Sim::saveResults2CSV()
 {
     int i = 0;
-    for (Drone *drn : drones)
+    for (Drone *drn : this->drones)
     {
         std::string fname = "drones/" + std::to_string(i) + ".csv";
         std::cout << fname;
