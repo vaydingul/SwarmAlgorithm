@@ -25,19 +25,19 @@ a = figure('Visible', 'on');
 hold on;
 i = 0;
 
-for k = 1:10:iter
+for k = 1:100:iter
 
     for m = 1:numberOfDrones
         plot(datas(k, 1, m), datas(k, 2, m), 'o-', 'MarkerSize', 6);
     end
 
     axis equal;
-    set(gca, 'xlim', [-10 10]);
-    set(gca, 'ylim', [0 30]);
+    set(gca, 'xlim', [-10 30]);
+    set(gca, 'ylim', [-10 30]);
     drawnow;
     i = i + 1;
 
-    if (mod(i, 10) == 0)
+    if (mod(i, 2) == 0)
         cla;
         i = 1;
     end

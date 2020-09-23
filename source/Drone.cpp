@@ -14,7 +14,7 @@ Drone::Drone(std::vector<float> x_initial, std::vector<float> v_initial)
     this->SetC_D(0.5);
     this->SetRho(1.225);
     this->SetS(0.5);
-    this->SetTarget({2.5, 20.0});
+    this->SetTarget({20.0, 20.0});
     this->SetAerodynamicsEffectMode(true);
     this->SetProximityCautionMode(true);
     this->SetTargetChaseMode(true);
