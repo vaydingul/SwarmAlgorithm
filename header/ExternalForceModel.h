@@ -5,10 +5,21 @@
 class ExternalForceModel : public _ForceModel
 {
 public:
-ExternalForceModel();
-~ExternalForceModel();
+    ExternalForceModel(Drone *, bool);
+    ~ExternalForceModel();
+    std::vector<float> GetForce() override;
+    void calculate() override;
+
+    void SetIsActive(bool);
+    bool GetIsActive() override;
+    void SetDrone(Drone *);
+    Drone *GetDrone();
+    void SetForce(std::vector<float>);
+
 private:
-protected:
+    bool isActive;
+    std::vector<float> force;
+    Drone *drone;
 };
 #include "../source/ExternalForceModel.cpp"
 #endif

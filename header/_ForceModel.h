@@ -2,6 +2,7 @@
 #define _FORCEMODEL
 #include <vector>
 #include "Drone.h"
+
 class _ForceModel
 {
 public:

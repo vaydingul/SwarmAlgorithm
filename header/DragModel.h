@@ -1,7 +1,9 @@
 #ifndef DRAGMODEL
 #define DRAGMODEL
-#include "_ForceModel.h"
+
 #include "Drone.h"
+#include "_ForceModel.h"
+
 class DragModel : public _ForceModel
 {
 public:

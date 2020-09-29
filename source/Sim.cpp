@@ -70,7 +70,6 @@ void Sim::postStep()
     {
         drn->SetProximityForce({0.0, 0.0});
         drn->SetProximityCount(1);
-        drn->SetExternalForce({0.0, 0.0});
     }
 
     unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();

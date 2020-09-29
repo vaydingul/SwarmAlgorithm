@@ -13,7 +13,7 @@ ProximityCautionModel::~ProximityCautionModel()
 
 void ProximityCautionModel::calculate()
 {
-    std::vector<float> reqForce(2, 0.0);
+    std::vector<float> proximityForce(2, 0.0);
 
     for (_Observer *obs : this->GetDrone()->Get_Observers())
     {
@@ -26,23 +26,22 @@ void ProximityCautionModel::calculate()
             for (int k = 0; k < 2; k++)
             {
                 r[k] /= dist;
-                reqForce[k] += -r[k] * this->GetDrone()->GetProximityCoeff() * (this->GetDrone()->GetProximityCautionDistance() / dist);
+                proximityForce[k] += -r[k] * this->GetDrone()->GetProximityCoeff() * (this->GetDrone()->GetProximityCautionDistance() / dist);
             }
             //            this->GetDrone()->notify(drn, reqForce);
         }
-        else
-        {
-            //            this->GetDrone()->notify(drn, {0.0, 0.0});
-        }
     }
-
-    std::vector<float> proximityForce(2, 0.0);
+    for (int k = 0; k < 2; k++)
+            {
+                proximityForce[k] /= this->GetDrone()->GetProximityCount();
+            }
 
     this->SetForce(proximityForce);
 }
 
 std::vector<float> ProximityCautionModel::GetForce()
 {
+    
     return this->force;
 }
 void ProximityCautionModel::SetIsActive(bool isActive)
