@@ -28,25 +28,22 @@ Drone::~Drone()
 void Drone::propagate(float dt)
 {
     float temp_a;
-    std::vector<float> temp_v(2, 0.0), temp_x(2, 0.0), dragForce(2, 0.0), targetForce(2, 0.0), _proximityForce(2, 0.0), _externalForce(2, 0.0);
+    std::vector<float> temp_v(2, 0.0), temp_x(2, 0.0), force(2, 0.0);
 
-    if (this->GetAerodynamicsEffectMode())
-        dragForce = this->calculateDrag();
-    if (this->GetTargetChaseMode())
-        targetForce = this->calculateTargetForce();
-    if (this->GetProximityCautionMode())
-        _proximityForce = this->calculateProximityForce();
-    if (this->GetExternalForceMode())
-        _externalForce = this->calculateExternalForce();
-
-    //std::cout << "Drag Force = [" << dragForce[0] << " " << dragForce[1] << "]" << std::endl;
-    //std::cout << "Target Force = [" << targetForce[0] << " " << targetForce[1] << "]" << std::endl;
-    //std::cout << "Proximity Force = [" << _proximityForce[0] << " " << _proximityForce[1] << "]" << std::endl;
-    //std::cout << "External Force = [" << _externalForce[0] << " " << _externalForce[1] << "]" << std::endl;
+    for (_ForceModel *_forceModel : this->Get_ForceModels())
+    {
+        if (_forceModel->GetIsActive())
+        {
+            for (int i = 0; i < 2; i++)
+            {
+                force[i] += _forceModel->GetForce()[i];
+            }
+        }
+    }
 
     for (int k = 0; k < 2; k++)
     {
-        temp_a = ((_proximityForce[k] / this->GetProximityCount()) + dragForce[k] + targetForce[k] + _externalForce[k]) / this->GetMass();
+        temp_a = force[k] / this->GetMass();
         temp_v[k] = this->GetVFinal()[k] + temp_a * dt;
         temp_x[k] = this->GetXFinal()[k] + this->GetVFinal()[k] * dt;
     }

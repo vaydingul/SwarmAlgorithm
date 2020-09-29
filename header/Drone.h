@@ -67,27 +67,28 @@ public:
     bool GetExternalForceMode();
     void SetExternalForce(std::vector<float>);
     std::vector<float> GetExternalForce();
+    
 
+    std::vector<_ForceModel *> Get_ForceModels();
+    void Set_ForceModels(std::vector<_ForceModel *>);
 private:
     float mass;
     std::vector<std::vector<float>> x;
     std::vector<std::vector<float>> v;
-    std::vector<float> proximityForce;
-    std::vector<float> externalForce;
+    
     int proximityCount;
     float proximityCautionDistance;
     float proximityCoeff;
+
     float targetSpringCoeff;
     float targetDampingCoeff;
+
     float C_D;
     float rho;
     float S;
-    std::vector<float> target;
-    bool targetChaseMode;
-    bool proximityCautionMode;
-    bool aerodynamicEffectMode;
-    bool externalForceMode;
 
+    std::vector<float> target;
+    std::vector<_ForceModel *> _ForceModels;
     std::vector<_Observer *> _observers;
 };
 #include "../source/Drone.cpp"

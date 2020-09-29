@@ -1,0 +1,8 @@
+ExternalForceModel::ExternalForceModel(){
+
+}
+
+ExternalForceModel::~ExternalForceModel(){
+
+}
+

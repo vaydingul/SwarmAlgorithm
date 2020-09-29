@@ -1,0 +1,8 @@
+TargetChaseModel::TargetChaseModel(){
+
+}
+
+TargetChaseModel::~TargetChaseModel(){
+
+}
+
