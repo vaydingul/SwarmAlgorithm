@@ -15,7 +15,7 @@ Sim::Sim(float dt, float startTime, float finalTime, int numberOfDrones, float i
     float angleIncrement = (360.0 / ((float)numberOfDrones)) * (3.1415 / 180.0);
     for (int k = 0; k < this->numberOfDrones; k++)
     {
-        drones.push_back(new Drone(point, {0, 0}));
+        drones.push_back(new Drone(point, {0.0, 0.0}));
         point[0] += cos(angle) * this->initialDistBtwDrns;
         point[1] += sin(angle) * this->initialDistBtwDrns;
         angle += angleIncrement;
@@ -68,7 +68,6 @@ void Sim::postStep()
 {
     for (Drone *drn : this->drones)
     {
-        drn->SetProximityForce({0.0, 0.0});
         drn->SetProximityCount(1);
     }
 

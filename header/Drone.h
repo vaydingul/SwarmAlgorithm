@@ -1,12 +1,9 @@
 #ifndef DRONE
 #define DRONE
+
 #include "_Observable.h"
 #include "_Observer.h"
 #include "_ForceModel.h"
-#include "DragModel.h"
-#include "TargetChaseModel.h"
-#include "ExternalForceModel.h"
-#include "ProximityCautionModel.h"
 
 #include <vector>
 #include <math.h>
@@ -17,13 +14,13 @@ public:
     Drone(std::vector<float>, std::vector<float>);
     ~Drone();
     void propagate(float dt);
-
+    void calculateForceModels();
     static std::vector<float> saturate(std::vector<float>, float);
     //COMMUNICATION PART
     void addObserver(_Observer *_observer) override;
     void removeObserver(_Observer *_observer) override;
     void notify(_Observer *_observer, std::vector<float>) override;
-    void update(std::vector<float>) override;
+    void update() override;
     std::vector<_Observer *> Get_Observers();
     void Set_Observers(std::vector<_Observer *>);
 
@@ -51,7 +48,7 @@ public:
     void SetRho(float);
     float GetS();
     void SetS(float);
-    
+
     std::vector<float> GetTarget();
     void SetTarget(std::vector<float>);
 
@@ -82,5 +79,10 @@ private:
     std::vector<_ForceModel *> _ForceModels;
     std::vector<_Observer *> _observers;
 };
+#include "DragModel.h"
+#include "TargetChaseModel.h"
+#include "ExternalForceModel.h"
+#include "ProximityCautionModel.h"
 #include "../source/Drone.cpp"
+
 #endif

@@ -1,3 +1,5 @@
+
+
 Drone::Drone(std::vector<float> x_initial, std::vector<float> v_initial)
 {
     this->x.push_back(x_initial);
@@ -49,6 +51,14 @@ void Drone::propagate(float dt)
     this->x.push_back(temp_x);
 }
 
+void Drone::calculateForceModels()
+{
+    for(_ForceModel *_forcemodel : this->Get_ForceModels())
+    {
+        _forcemodel->calculate();
+    }
+}
+
 std::vector<float> Drone::saturate(std::vector<float> vec, float saturationVal)
 {
     int size = vec.size();
@@ -82,10 +92,10 @@ void Drone::removeObserver(_Observer *_observer)
 
 void Drone::notify(_Observer *_observer, std::vector<float> reqForce)
 {
-    _observer->update(reqForce);
+    //_observer->update(reqForce);
 }
 
-void Drone::update(std::vector<float> reqForce)
+void Drone::update()
 {
     /**
     std::vector<float> SetForce(2);
