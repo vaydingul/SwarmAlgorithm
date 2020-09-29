@@ -171,6 +171,7 @@ void Drone::notify(_Observer *_observer, std::vector<float> reqForce)
 
 void Drone::update(std::vector<float> reqForce)
 {
+    /**
     std::vector<float> SetForce(2);
     for (int k = 0; k < 2; k++)
     {
@@ -179,6 +180,7 @@ void Drone::update(std::vector<float> reqForce)
     this->SetProximityForce(SetForce);
 
     this->SetProximityCount(this->GetProximityCount() + 1);
+    **/
 }
 
 std::vector<float> Drone::GetXFinal()

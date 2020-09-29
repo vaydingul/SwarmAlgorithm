@@ -1,3 +1,5 @@
+#include <math.h>
+
 ProximityCautionModel::ProximityCautionModel(Drone *drn, bool isActive)
 {
     this->SetDrone(drn);
@@ -11,47 +13,32 @@ ProximityCautionModel::~ProximityCautionModel()
 
 void ProximityCautionModel::calculate()
 {
+    std::vector<float> reqForce(2, 0.0);
 
     for (_Observer *obs : this->GetDrone()->Get_Observers())
     {
         Drone *drn = (Drone *)obs;
-        std::vector<float> reqForce(2, 0.0);
-        std::vector<float> r = this->calculateRVector(drn);
-        float dist = this->calculateDistanceFromRVector(r);
-        if (dist < this->GetProximityCautionDistance())
+        std::vector<float> r = this->GetDrone()->calculateRVector(drn);
+        float dist = Drone::calculateDistanceFromRVector(r);
+        if (dist < this->GetDrone()->GetProximityCautionDistance())
         {
 
             for (int k = 0; k < 2; k++)
             {
                 r[k] /= dist;
-                reqForce[k] = r[k] * this->proximityCoeff * (this->GetProximityCautionDistance() / dist);
+                reqForce[k] += -r[k] * this->GetDrone()->GetProximityCoeff() * (this->GetDrone()->GetProximityCautionDistance() / dist);
             }
-            this->GetDrone()->notify(drn, reqForce);
+            //            this->GetDrone()->notify(drn, reqForce);
         }
         else
         {
-            this->notify(drn, {0.0, 0.0});
+            //            this->GetDrone()->notify(drn, {0.0, 0.0});
         }
     }
 
     std::vector<float> proximityForce(2, 0.0);
-    std::vector<float> v = this->GetDrone()->GetVFinal();
-    float vMag = sqrt(pow(v[0], 2) + pow(v[1], 2));
 
-    float dragForceMag = pow(vMag, 2) * 0.5 * this->GetDrone()->GetRho() * this->GetDrone()->GetS() * this->GetDrone()->GetC_D();
-    if (vMag != 0.0)
-    {
-        for (int k = 0; k < 2; k++)
-        {
-            v[k] /= vMag;
-            dragForce[k] = -dragForceMag * v[k];
-        }
-    }
-    else
-    {
-        dragForce = {0.0, 0.0};
-    }
-    this->SetForce(dragForce);
+    this->SetForce(proximityForce);
 }
 
 std::vector<float> ProximityCautionModel::GetForce()

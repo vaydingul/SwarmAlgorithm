@@ -56,7 +56,7 @@ public:
     std::vector<_Observer *> Get_Observers();
     void Set_Observers(std::vector<_Observer *>);
     std::vector<float> calculateRVector(Drone *);
-    float calculateDistanceFromRVector(std::vector<float>);
+    static float calculateDistanceFromRVector(std::vector<float>);
     void SetTargetChaseMode(bool);
     void SetProximityCautionMode(bool);
     void SetAerodynamicsEffectMode(bool);
