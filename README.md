@@ -1,5 +1,8 @@
 # Swarm Algorithm
 
+![](https://i.pinimg.com/564x/61/8e/4e/618e4ef3775db1889e63cd97e1c99a88.jpg)
+
+
 This is a very basic approach to *Swarm Algorithm*.
 There are two main classes in this project, namely, **Drone** and **Sim**.
 
@@ -65,4 +68,28 @@ where *k* and *d* represent the spring and damping coefficient, respectively.
 ## Sim
 
 It is the main class which is responsible for the general management of the simulation. It can handle the initial drone orientation, and the propagation of the whole simulation.
+***
 
+To be able to visualize the simulation, there is attached *MATLAB* script, called **plotDrones.m**
+
+### Basic Execution
+
+To be able to execute a simulation, the **SimMain.cpp**
+file can be used. After the execution of that file, the results can be visualized in *MATLAB*.
+
+**SimMain.cpp** file contains a link for the **deleteCsv.py** file, which removes the previously created *.csv* files from the workspace. Ona can easily comment out the related line to prevent the usage of *Python* programming language. 
+
+
+Also, one can make use of the other visualization tools rather than *MATLAB*, by simply using the *.csv* files from the constructed *drones* folder.
+
+
+# TODO:
+- More generic Sim construction (Very simple)
+- 3D implementation (Might be challenging)
+- Addition of environment and mass-fuel models (Challenging)
+- Parameterization of the force models to prevent the addition of the model-specific parameters to the *Drone* class variables.
+
+
+# Final Words
+
+It is a very ***incomplete*** project, therefore, all contributions and pull requests are welcome. Please do not hesitate to open an issue to clear out bugs and provide performance boosts. 

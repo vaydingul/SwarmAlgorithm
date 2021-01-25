@@ -2,6 +2,19 @@
 #define TARGETCHASEMODEL
 #include "_ForceModel.h"
 
+
+
+/*
+
+TargetChaseModel
+
+It is an concrete implementation of the 
+target chase force model. It basically
+provides drone an ability to follow a predefined
+target.
+
+*/
+
 class TargetChaseModel : public _ForceModel
 {
 public:

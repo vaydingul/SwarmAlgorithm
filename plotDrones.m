@@ -1,7 +1,9 @@
-clear; clc; close all;
+% Fetch drone .csv files in the directory of ´drones´
 files = dir("drones");
 k = 1;
 
+
+% Read all the data belongs to the drones
 for file = files'
 
     if (~file.isdir)
@@ -13,6 +15,7 @@ for file = files'
 end
 
 sz = size(datas);
+% Number of iteration to visualize
 iter = sz(1);
 
 if (length(sz) ~= 2)
@@ -25,6 +28,7 @@ a = figure('Visible', 'on');
 hold on;
 i = 0;
 
+% Simple animation routine
 for k = 1:100:iter
 
     for m = 1:numberOfDrones

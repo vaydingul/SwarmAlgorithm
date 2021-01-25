@@ -2,6 +2,19 @@
 #define PROXIMITYCAUTIONMODEL
 #include "_ForceModel.h"
 
+
+
+/*
+
+ProximityCautionModel
+
+It is an concrete implementation of the 
+proximity caution force model. It basically
+prevents the collision between drones.
+
+*/
+
+
 class ProximityCautionModel : public _ForceModel
 {
 public:

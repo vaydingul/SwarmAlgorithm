@@ -2,6 +2,16 @@
 #define EXTERNALFORCEMODEL
 #include "_ForceModel.h"
 
+
+
+/*
+
+ExternalForceModel
+
+It is an concrete implementation of the 
+external force model.
+
+*/
 class ExternalForceModel : public _ForceModel
 {
 public:

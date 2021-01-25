@@ -8,11 +8,26 @@
 #include <vector>
 #include <math.h>
 #include <iostream>
+
+/*
+
+Drone
+
+It is a concrete implementation of
+the Drone model. It is a multiple combination 
+of different classes to model self-sufficient 
+communication model.
+
+*/
+
+
 class Drone : public _Observable, public _Observer
 {
 public:
+    // Constructor and destructor
     Drone(std::vector<float>, std::vector<float>);
     ~Drone();
+    // Propagation of the drone motion
     void propagate(float dt);
     void calculateForceModels();
     static std::vector<float> saturate(std::vector<float>, float);
@@ -60,21 +75,29 @@ public:
     void add_ForceModel(_ForceModel *);
 
 private:
+
+    // Massi position and velocity of the drone
     float mass;
     std::vector<std::vector<float>> x;
     std::vector<std::vector<float>> v;
 
+    // Force model specific coefficients
+
+    // ProximityCautionModel
     int proximityCount;
     float proximityCautionDistance;
     float proximityCoeff;
 
+    // TargetChaseModel
     float targetSpringCoeff;
     float targetDampingCoeff;
 
+    // DragModel
     float C_D;
     float rho;
     float S;
 
+    
     std::vector<float> target;
     std::vector<_ForceModel *> _ForceModels;
     std::vector<_Observer *> _observers;

@@ -6,6 +6,19 @@
 #include <math.h>
 #include <fstream>
 #include <string>
+
+
+/*
+
+Sim
+
+It is an concrete implementation of the 
+Sim class. It basically governs the initial
+orientation of the drones and maintains the
+propagation of the main simulation.
+
+*/
+
 class Sim
 {
 public:
