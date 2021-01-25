@@ -1,5 +1,6 @@
 #include <math.h>
-
+#include <chrono>
+#include <random>
 Sim::Sim(float dt, float startTime, float finalTime, int numberOfDrones, float initialDistBtwDrns)
 {
     this->dt = dt;
@@ -11,10 +12,10 @@ Sim::Sim(float dt, float startTime, float finalTime, int numberOfDrones, float i
 
     std::vector<float> point = {0, 0};
     float angle = 0.0;
-    float angleIncrement = (360.0 / ((float)numberOfDrones)) * ( 3.1415 / 180.0);
+    float angleIncrement = (360.0 / ((float)numberOfDrones)) * (3.1415 / 180.0);
     for (int k = 0; k < this->numberOfDrones; k++)
     {
-        drones.push_back(new Drone(point, {0, 0}));
+        drones.push_back(new Drone(point, {0.0, 0.0}));
         point[0] += cos(angle) * this->initialDistBtwDrns;
         point[1] += sin(angle) * this->initialDistBtwDrns;
         angle += angleIncrement;
@@ -51,7 +52,7 @@ void Sim::preStep()
 
     for (Drone *drn : this->drones)
     {
-        drn->checkProximity();
+        drn->calculateForceModels();
     }
 }
 
@@ -67,10 +68,11 @@ void Sim::postStep()
 {
     for (Drone *drn : this->drones)
     {
-        drn->SetProximityForce({0.0, 0.0});
         drn->SetProximityCount(1);
-        drn->SetExternalForce({0.0, 0.0});
     }
+
+    unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
+    shuffle(this->drones.begin(), this->drones.end(), std::default_random_engine(seed));
 }
 
 void Sim::saveResults2CSV()
